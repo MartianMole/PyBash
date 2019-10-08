@@ -25,6 +25,7 @@ class ChangeDirectory:
             return __doc__
         elif len(command) == 2:
             separatedCommand = command[1].split('\\')
+            print(separatedCommand)
             while '' in separatedCommand:  # In cases like 'cd ..\\\\Folder\\\'
                 separatedCommand.pop(separatedCommand.index(''))
             j = 0
@@ -32,22 +33,14 @@ class ChangeDirectory:
                 if len(currentCwd) > 1:
                     currentCwd.pop()
                 j += 1
-
-
-            #### ИСПРАВИТЬ
             for i in range(j, len(separatedCommand)):
-                if path.isdir('\\'.join(currentCwd + [separatedCommand[i]])) and \
-                        path.exists('\\'.join(currentCwd + [separatedCommand[i]])):
-                    currentCwd.append(separatedCommand[i])  # Making new Path List
+                if path.exists('\\'.join(currentCwd + [separatedCommand[i]])):
+                    if path.isdir('\\'.join(currentCwd + [separatedCommand[i]])):
+                        currentCwd.append(separatedCommand[i])  # Making new Path List
+                    else:
+                        return "Error: you can't move to the file"  # In cases like "cd file.txt"
                 else:
-                    return "Error: you can't move to the file"
-            if path.exists('\\'.join(currentCwd)):
-                return currentCwd
-            else:
-                return "Error: path doesn't exist"
-            #### ИСПРАВИТЬ
-
-
-
+                    return "Error: path doesn't exist"
+            return currentCwd
         else:
             return 'Error: wrong command'

@@ -1,6 +1,7 @@
 import tkinter as tk
 import os
 import changeDir
+import listElems
 
 currentCwd = os.getcwd()
 
@@ -23,7 +24,7 @@ def enter(event):
             currentCwd = makePath(changeDir.ChangeDirectory(command, currentCwd).doTheThing())
     elif command[0] == 'ls':
         text.insert(tk.END, '\n')
-        text.insert(tk.END, os.listdir(path=currentCwd))
+        text.insert(tk.END, listElems.Ls(command[1:]).showList())
     text.insert(tk.END, '\n')
     text.insert(tk.END, currentCwd, 'cwd')
 
