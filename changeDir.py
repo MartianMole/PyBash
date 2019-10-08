@@ -1,3 +1,6 @@
+from os import path
+
+
 class ChangeDirectory:
     def __init__(self, command, currentCwd):
         self.command = command
@@ -10,8 +13,18 @@ class ChangeDirectory:
             return 'SomeDocumentation'
         elif len(command) == 2:
             separatedCommand = command[1].split('\\')
-            for i in range(len(separatedCommand)):
-                if separatedCommand[i] == '..' and i == 0:
-                    if len(currentCwd) > 1:
-                        currentCwd.pop()
-        return currentCwd
+            while '' in separatedCommand:  # In cases like 'cd ..\\\\Folder\\\'
+                separatedCommand.pop(separatedCommand.index(''))
+            j = 0
+            while j < len(separatedCommand) and separatedCommand[j] == '..':
+                if len(currentCwd) > 1:
+                    currentCwd.pop()
+                j += 1
+            for i in range(j, len(separatedCommand)):
+                currentCwd.append(separatedCommand[i])
+            if path.exists('\\'.join(currentCwd)):
+                return currentCwd
+            else:
+                return 'Error'
+        else:
+            return 'Error'

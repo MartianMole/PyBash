@@ -10,11 +10,17 @@ def makePath(listOfDirs):
 
 
 def enter(event):
-    command = text.get("1.0", tk.END).splitlines()[-1]
+    command = text.get("1.0", tk.END).splitlines()[-1]  # Take the last command
     command = list(map(str, command.split()))
     global currentCwd
     if command[0] == 'cd':
-        currentCwd = makePath(changeDir.ChangeDirectory(command, currentCwd).doTheThing())
+        res = changeDir.ChangeDirectory(command, currentCwd).doTheThing()
+        if len(command) == 1:
+            text.insert(tk.END, '\n' + res)  # Will writes documentation
+        elif res == 'Error':
+            text.insert(tk.END, '\n' + 'Error')
+        else:
+            currentCwd = makePath(changeDir.ChangeDirectory(command, currentCwd).doTheThing())
     elif command[0] == 'ls':
         text.insert(tk.END, '\n')
         text.insert(tk.END, os.listdir(path=currentCwd))
