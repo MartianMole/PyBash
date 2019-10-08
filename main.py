@@ -17,8 +17,8 @@ def enter(event):
         res = changeDir.ChangeDirectory(command, currentCwd).doTheThing()
         if len(command) == 1:
             text.insert(tk.END, '\n' + res)  # Will writes documentation
-        elif res == 'Error':
-            text.insert(tk.END, '\n' + 'Error')
+        elif res[:5] == 'Error':
+            text.insert(tk.END, '\n' + res, 'err')
         else:
             currentCwd = makePath(changeDir.ChangeDirectory(command, currentCwd).doTheThing())
     elif command[0] == 'ls':
@@ -32,7 +32,10 @@ root = tk.Tk()
 text = tk.Text(bg='black', fg='white', insertbackground='#24E016')
 text.pack()
 text.bind('<Return>', enter)
+
 text.tag_config('cwd', foreground='#24E016')
+text.tag_config('err', foreground='#FF1818')
+
 text.insert(tk.END, os.getcwd(), 'cwd')
 text.insert(tk.END, '\n', 'cwd')
 root.mainloop()
