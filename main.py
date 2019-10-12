@@ -16,15 +16,21 @@ def enter(event):
     global currentCwd
     if command[0] == 'cd':
         res = changeDir.ChangeDirectory(command, currentCwd).doTheThing()
-        if len(command) == 1:
-            text.insert(tk.END, '\n' + res)  # Will writes documentation
+        if len(command) == 1 or command[1] == '-h':
+            text.insert(tk.END, '\n' + changeDir.__doc__)
         elif res[:5] == 'Error':
             text.insert(tk.END, '\n' + res, 'err')
         else:
             currentCwd = makePath(changeDir.ChangeDirectory(command, currentCwd).doTheThing())
     elif command[0] == 'ls':
-        text.insert(tk.END, '\n')
-        text.insert(tk.END, listElems.Ls(command[1:]).showList())
+        res = listElems.Ls(command[1:], currentCwd).showList()
+        if len(command) == 2 and command[1] == '-h':
+            text.insert(tk.END, '\n' + listElems.__doc__)
+        elif res[:5] == 'Error':
+            text.insert(tk.END, '\n' + res, 'err')
+        else:
+            text.insert(tk.END, '\n')
+            text.insert(tk.END, listElems.Ls(command[1:], currentCwd).showList())
     text.insert(tk.END, '\n')
     text.insert(tk.END, currentCwd, 'cwd')
 

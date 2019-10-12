@@ -18,29 +18,28 @@ class ChangeDirectory:
         self.command = command
         self.currentCwd = currentCwd
 
-    def doTheThing(self):
+    def processingRequest(self):
         command = self.command
         currentCwd = self.currentCwd.split('\\')
-        if len(command) == 1:
-            return __doc__
-        elif len(command) == 2:
-            separatedCommand = command[1].split('\\')
-            print(separatedCommand)
-            while '' in separatedCommand:  # In cases like 'cd ..\\\\Folder\\\'
-                separatedCommand.pop(separatedCommand.index(''))
-            j = 0
-            while j < len(separatedCommand) and separatedCommand[j] == '..':
-                if len(currentCwd) > 1:
-                    currentCwd.pop()
-                j += 1
-            for i in range(j, len(separatedCommand)):
-                if path.exists('\\'.join(currentCwd + [separatedCommand[i]])):
-                    if path.isdir('\\'.join(currentCwd + [separatedCommand[i]])):
-                        currentCwd.append(separatedCommand[i])  # Making new Path List
-                    else:
-                        return "Error: you can't move to the file"  # In cases like "cd file.txt"
-                else:
-                    return "Error: path doesn't exist"
-            return currentCwd
+        separatedCommand = command[1].split('\\')
+        if '' in separatedCommand[:-1]:  # In cases like cd ..\\\Folder\\
+            return "Error: wrong request"
+        j = 0
+        while j < len(separatedCommand) and separatedCommand[j] == '..':  # Go up the directories
+            if len(currentCwd) > 1:
+                print(currentCwd)
+                currentCwd.pop()
+            j += 1
+        for i in range(j, len(separatedCommand)):
+            if path.exists('\\'.join(currentCwd + [separatedCommand[i]])) and \
+                    path.isdir('\\'.join(currentCwd + [separatedCommand[i]])):
+                currentCwd.append(separatedCommand[i])  # Making new Path List
+            else:
+                return "Error: wrong request"
+        return currentCwd
+
+    def doTheThing(self):
+        if len(self.command) == 2:
+            return ChangeDirectory.processingRequest(self)
         else:
             return 'Error: wrong command'
