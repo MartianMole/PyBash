@@ -1,15 +1,19 @@
 from os import path
 
 __doc__ = '''
-=============cd=============
+================cd================
 Command to navigate directories
+
 ==> Usage:
-cd _path_
+cd [path]
 Use .. to navigate up one directory
-==> Examples: 
-cd Desktop\\Folder
-cd ..\\OtherFolder
-=============cd=============
+
+==> Examples:
+cd Desktop:
+    C:\\Desktop
+cd ..
+    C:\\
+================cd================
 '''
 
 
@@ -35,7 +39,7 @@ class ChangeDirectory:
                     path.isdir('\\'.join(currentCwd + [separatedCommand[i]])):
                 currentCwd.append(separatedCommand[i])  # Making new Path List
             else:
-                return "Error: wrong request"
+                return "Error: wrong request"  # Cases like "fol der" will be added in future
         return currentCwd
 
     def doTheThing(self):

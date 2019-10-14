@@ -2,15 +2,30 @@ import os
 
 
 __doc__ = '''
-=============ls=============
+================ls================
 Command showing list of directories and files
+
 ==> Usage:
 ls [keys]
+
 ==> Keys:
 -h help
--a
+-a shows hidden files and folders
+-l shows pretty list with numbers, sizes and types(folder or file)
+
 ==> Examples: 
-=============ls=============
+ls -a:
+    folder file
+ls -l:
+    .hidden folder file
+ls -la:
+ultra mega cool list:
+    1) .hidden_________file____4
+    2) folder__________folder__0
+    3) file____________file____4096
+ls -h - manual for noobs:
+    *recursion*
+================ls================
 '''
 
 
@@ -38,7 +53,7 @@ class Ls:
                 result += listDir[i] + ' '
         if 'l' not in keys:
             return result
-        if 'l' in keys:
+        if 'l' in keys:  # Then it shows type(file or folder) and size in bytes
             result = ''
             j = 1
             for i in range(len(listDir)):

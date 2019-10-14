@@ -14,7 +14,9 @@ def enter(event):
     command = text.get("1.0", tk.END).splitlines()[-1]  # Take the last command
     command = list(map(str, command.split()))
     global currentCwd
-    if command[0] == 'cd':
+    if not command:
+        pass
+    elif command[0] == 'cd':
         res = changeDir.ChangeDirectory(command, currentCwd).doTheThing()
         if len(command) == 1 or command[1] == '-h':
             text.insert(tk.END, '\n' + changeDir.__doc__)
@@ -31,11 +33,14 @@ def enter(event):
         else:
             text.insert(tk.END, '\n')
             text.insert(tk.END, listElems.Ls(command[1:], currentCwd).showList())
+    elif command[0] == 'exit' and len(command) == 1:
+        root.quit()
     text.insert(tk.END, '\n')
     text.insert(tk.END, currentCwd, 'cwd')
 
 
 root = tk.Tk()
+root.resizable(0, 0)
 text = tk.Text(bg='black', fg='white', insertbackground='#24E016')
 text.pack()
 text.bind('<Return>', enter)
