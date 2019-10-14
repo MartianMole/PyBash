@@ -1,5 +1,4 @@
 import os
-import changeDir
 
 
 __doc__ = '''
@@ -44,6 +43,10 @@ class Ls:
             j = 1
             for i in range(len(listDir)):
                 if listDir[i][0] == '.' and 'a' in keys or listDir[i][0] != '.':
-                    result += str(j) + ') ' + listDir[i] + '\n'
+                    result += (str(j) + ') ' + listDir[i]).ljust(30, '_') + \
+                              (str('folder') * os.path.isdir(str(currentCwd + '/' + listDir[i]).replace('\\', '/')) +
+                               str('file') * os.path.isfile(
+                                          str(currentCwd + '/' + listDir[i]).replace('\\', '/'))).ljust(10, '_') + \
+                              str(os.stat(str(currentCwd + '/' + listDir[i]).replace('\\', '/')).st_size) + '\n'
                     j += 1
         return result
