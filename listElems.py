@@ -30,9 +30,9 @@ ls -h - manual for noobs:
 
 
 class Ls:
-    def __init__(self, keys, currentCwd):
+    def __init__(self, keys, currentPath):
         self.keys = keys
-        self.currentCwd = currentCwd
+        self.currentPath = currentPath
 
     def makeKeysList(self):
         keys = self.keys
@@ -45,10 +45,10 @@ class Ls:
 
     def showList(self):
         keys = Ls.makeKeysList(self)
-        currentCwd = self.currentCwd
+        currentPath = self.currentPath
         result = ''
-        listDir = os.listdir(currentCwd)
-        for i in range(len(os.listdir(currentCwd))):
+        listDir = os.listdir(currentPath)
+        for i in range(len(os.listdir(currentPath))):
             if listDir[i][0] == '.' and 'a' in keys or listDir[i][0] != '.':
                 result += listDir[i] + ' '
         if 'l' not in keys:
@@ -59,9 +59,9 @@ class Ls:
             for i in range(len(listDir)):
                 if listDir[i][0] == '.' and 'a' in keys or listDir[i][0] != '.':
                     result += (str(j) + ') ' + listDir[i]).ljust(30, '_') + \
-                              (str('folder') * os.path.isdir(str(currentCwd + '/' + listDir[i]).replace('\\', '/')) +
+                              (str('folder') * os.path.isdir(str(currentPath + '/' + listDir[i]).replace('\\', '/')) +
                                str('file') * os.path.isfile(
-                                          str(currentCwd + '/' + listDir[i]).replace('\\', '/'))).ljust(10, '_') + \
-                              str(os.stat(str(currentCwd + '/' + listDir[i]).replace('\\', '/')).st_size) + '\n'
+                                          str(currentPath + '/' + listDir[i]).replace('\\', '/'))).ljust(10, '_') + \
+                              str(os.stat(str(currentPath + '/' + listDir[i]).replace('\\', '/')).st_size) + '\n'
                     j += 1
         return result

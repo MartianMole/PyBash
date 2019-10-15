@@ -2,6 +2,7 @@ import tkinter as tk
 import os
 import changeDir
 import listElems
+import concatenation
 
 currentCwd = os.getcwd()
 
@@ -33,6 +34,12 @@ def enter(event):
         else:
             text.insert(tk.END, '\n')
             text.insert(tk.END, listElems.Ls(command[1:], currentCwd).showList())
+    elif command[0] == 'cat':
+        if len(command) == 2 and command[1] == '-h':
+            text.insert(tk.END, '\n' + concatenation.__doc__)
+        else:
+            if len(command) >= 2:
+                concatenation.Concatenation(command[1:-1], command[1], text, tk).writeContent()
     elif command[0] == 'exit' and len(command) == 1:
         root.quit()
     text.insert(tk.END, '\n')
