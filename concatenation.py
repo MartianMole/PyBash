@@ -37,20 +37,24 @@ class Concatenation:
 
     def makeKeysList(self):
         keys = self.keys
-        result = []
+        result = set()
         for i in keys:
             if i[0] == '-':
                 for j in i[1:]:
-                    result.append(j)
+                    result.add(j)
         return result
 
     def writeContent(self):
         keys = Concatenation.makeKeysList(self)
+        print(keys)
         text = self.text
         file = self.file
         tk = self.tk
         if path.isfile(file):
             file = open(file, 'r')
+            text.insert(tk.END, '\n')  # cat -n C:\Users\danka\Desktop\test.txt
+            num = 1
             for line in file:
-                text.insert(tk.END, line + '\n')
+                text.insert(tk.END, (str(num) + ') ') * ('n' in keys) + line)
+                num += 1
 

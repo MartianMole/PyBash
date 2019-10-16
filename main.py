@@ -39,7 +39,7 @@ def enter(event):
             text.insert(tk.END, '\n' + concatenation.__doc__)
         else:
             if len(command) >= 2:
-                concatenation.Concatenation(command[1:-1], command[1], text, tk).writeContent()
+                concatenation.Concatenation(command[1:-1], command[-1], text, tk).writeContent()
     elif command[0] == 'exit' and len(command) == 1:
         root.quit()
     text.insert(tk.END, '\n')
