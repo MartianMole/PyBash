@@ -1,4 +1,6 @@
 import os
+import makeKeysList
+import makePath
 
 
 __doc__ = '''
@@ -30,9 +32,10 @@ ls -h - manual for noobs:
 
 
 class Ls:
-    def __init__(self, keys, currentPath):
+    def __init__(self, keys, currentPath, requestPath=os.getcwd()):
         self.keys = keys
         self.currentPath = currentPath
+        self.requestPath = requestPath
 
     def makeKeysList(self):
         keys = self.keys

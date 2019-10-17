@@ -1,39 +1,32 @@
 from os import path
+import makePath
 
 __doc__ = '''
-================ls================
-Command showing list of directories and files
+================cat===============
+This command displays the contents of a text file.
 
 ==> Usage:
-ls [keys]
+cat [keys] [path]
 
 ==> Keys:
 -h help
--a shows hidden files and folders
--l shows pretty list with numbers, sizes and types(folder or file)
+-n number each line
 
 ==> Examples: 
-ls -a:
-    folder file
-ls -l:
-    .hidden folder file
-ls -la:
-ultra mega cool list:
-    1) .hidden_________file____4
-    2) folder__________folder__0
-    3) file____________file____4096
-ls -h - manual for noobs:
-    *recursion*
-================ls================
+cat file.txt
+cat -n ..\folder\file
+
+================cat===============
 '''
 
 
 class Concatenation:
-    def __init__(self, keys, file, text, tk):
+    def __init__(self, keys, file, text, tk, curPath):
         self.keys = keys
         self.file = file
         self.text = text
         self.tk = tk
+        self.curPath = curPath
 
     def makeKeysList(self):
         keys = self.keys
@@ -46,13 +39,12 @@ class Concatenation:
 
     def writeContent(self):
         keys = Concatenation.makeKeysList(self)
-        print(keys)
         text = self.text
-        file = self.file
+        file = '\\'.join(makePath.processingRequest(self.file, self.curPath))
         tk = self.tk
         if path.isfile(file):
             file = open(file, 'r')
-            text.insert(tk.END, '\n')  # cat -n C:\Users\danka\Desktop\test.txt
+            text.insert(tk.END, '\n')
             num = 1
             for line in file:
                 text.insert(tk.END, (str(num) + ') ') * ('n' in keys) + line)

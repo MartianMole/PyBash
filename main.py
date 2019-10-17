@@ -3,8 +3,9 @@ import os
 import changeDir
 import listElems
 import concatenation
+from os import path
 
-currentCwd = os.getcwd()
+currentPath = os.getcwd()
 
 
 def makePath(listOfDirs):
@@ -14,36 +15,38 @@ def makePath(listOfDirs):
 def enter(event):
     command = text.get("1.0", tk.END).splitlines()[-1]  # Take the last command
     command = list(map(str, command.split()))
-    global currentCwd
+    global currentPath
     if not command:
         pass
     elif command[0] == 'cd':
-        res = changeDir.ChangeDirectory(command, currentCwd).doTheThing()
+        res = changeDir.ChangeDirectory(command, currentPath).doTheThing()
         if len(command) == 1 or command[1] == '-h':
             text.insert(tk.END, '\n' + changeDir.__doc__)
         elif res[:5] == 'Error':
             text.insert(tk.END, '\n' + res, 'err')
         else:
-            currentCwd = makePath(changeDir.ChangeDirectory(command, currentCwd).doTheThing())
+            currentPath = makePath(changeDir.ChangeDirectory(command, currentPath).doTheThing())
     elif command[0] == 'ls':
-        res = listElems.Ls(command[1:], currentCwd).showList()
+        if path.isfile(makePath(command[-1])):
+            res = listElems.Ls(command[1:], currentPath, command[-1]).showList()
+        res = listElems.Ls(command[1:], currentPath).showList()
         if len(command) == 2 and command[1] == '-h':
             text.insert(tk.END, '\n' + listElems.__doc__)
         elif res[:5] == 'Error':
             text.insert(tk.END, '\n' + res, 'err')
         else:
             text.insert(tk.END, '\n')
-            text.insert(tk.END, listElems.Ls(command[1:], currentCwd).showList())
+            text.insert(tk.END, listElems.Ls(command[1:], currentPath).showList())
     elif command[0] == 'cat':
         if len(command) == 2 and command[1] == '-h':
             text.insert(tk.END, '\n' + concatenation.__doc__)
         else:
             if len(command) >= 2:
-                concatenation.Concatenation(command[1:-1], command[-1], text, tk).writeContent()
+                concatenation.Concatenation(command[1:-1], command[-1], text, tk, currentPath).writeContent()
     elif command[0] == 'exit' and len(command) == 1:
         root.quit()
     text.insert(tk.END, '\n')
-    text.insert(tk.END, currentCwd, 'cwd')
+    text.insert(tk.END, currentPath, 'cwd')
 
 
 root = tk.Tk()
