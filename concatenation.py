@@ -35,13 +35,17 @@ class Concatenation:
             if i[0] == '-':
                 for j in i[1:]:
                     result.add(j)
+            else:
+                return 'Error: unknown key '
         return result
 
     def writeContent(self):
         keys = Concatenation.makeKeysList(self)
         text = self.text
-        file = '\\'.join(makePath.processingRequest(self.file, self.curPath))
         tk = self.tk
+        file = '\\'.join(makePath.processingRequest(self.file, self.curPath))
+        if not path.isfile(file):
+            text.insert(tk.END, '\nError: ' + file + ' is not a file', 'err')
         if path.isfile(file):
             file = open(file, 'r')
             text.insert(tk.END, '\n')
