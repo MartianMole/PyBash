@@ -28,6 +28,6 @@ class ChangeDirectory:
             if path.isdir('\\'.join(makePath.processingRequest(self.command[1], self.currentPath))):
                 return makePath.processingRequest(self.command[1], self.currentPath)
             else:
-                return None
+                return 'Error: wrong command'
         else:
             return 'Error: wrong command'

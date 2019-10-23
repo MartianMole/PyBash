@@ -49,8 +49,13 @@ class Ls:
     def showList(self):
         keys = Ls.makeKeysList(self)
         currentPath = self.currentPath
+        requestPath = self.requestPath
         result = ''
-        listDir = os.listdir(currentPath)
+        if requestPath != os.getcwd():
+            listDir = os.listdir('\\'.join(makePath.processingRequest(requestPath, currentPath)))
+            currentPath = '\\'.join(makePath.processingRequest(requestPath, currentPath))
+        else:
+            listDir = os.listdir(currentPath)
         for i in range(len(os.listdir(currentPath))):
             if listDir[i][0] == '.' and 'a' in keys or listDir[i][0] != '.':
                 result += listDir[i] + ' '

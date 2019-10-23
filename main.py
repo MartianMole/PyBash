@@ -3,7 +3,7 @@ import os
 import changeDir
 import listElems
 import concatenation
-from os import path
+
 
 currentPath = os.getcwd()
 
@@ -34,7 +34,10 @@ def enter(event):
             text.insert(tk.END, '\n' + res, 'err')
         else:
             text.insert(tk.END, '\n')
-            text.insert(tk.END, listElems.Ls(command[1:], currentPath).showList())
+            if command[-1][0] == '.':
+                text.insert(tk.END, listElems.Ls(command[1:], currentPath, requestPath=command[-1]).showList())
+            else:
+                text.insert(tk.END, listElems.Ls(command[1:], currentPath).showList())
     elif command[0] == 'cat':
         if len(command) == 2 and command[1] == '-h':
             text.insert(tk.END, '\n' + concatenation.__doc__)
@@ -48,7 +51,7 @@ def enter(event):
     else:
         text.insert(tk.END, '\nError: Wrong request', 'err')
     text.insert(tk.END, '\n')
-    text.insert(tk.END, currentPath, 'cwd')  # cat ..\PyBash\main.py
+    text.insert(tk.END, currentPath, 'cwd')
 
 
 root = tk.Tk()
