@@ -37,17 +37,8 @@ class Ls:
         self.currentPath = currentPath
         self.requestPath = requestPath
 
-    def makeKeysList(self):
-        keys = self.keys
-        result = []
-        for i in keys:
-            if i[0] == '-':
-                for j in i[1:]:
-                    result.append(j)
-        return result
-
     def showList(self):
-        keys = Ls.makeKeysList(self)
+        keys = makeKeysList.makeKeysList(self.keys, 'alh')
         currentPath = self.currentPath
         requestPath = self.requestPath
         result = ''

@@ -3,6 +3,7 @@ import os
 import changeDir
 import listElems
 import concatenation
+import makeDir
 
 
 currentPath = os.getcwd()
@@ -48,6 +49,11 @@ def enter(event):
         root.quit()
     elif command[0] == 'clear' and len(command) == 1:
         text.delete('1.0', tk.END)
+    elif command[0] == 'mkdir' and len(command) >= 2:
+        if len(command) == 2 and command[1] == '-h':
+            text.insert(tk.END, '\n' + makeDir.__doc__)
+        elif len(command) == 3:
+            pass
     else:
         text.insert(tk.END, '\nError: Wrong request', 'err')
     text.insert(tk.END, '\n')

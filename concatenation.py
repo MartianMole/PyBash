@@ -1,5 +1,6 @@
 from os import path
 import makePath
+import makeKeysList
 
 __doc__ = '''
 ================cat===============
@@ -28,22 +29,14 @@ class Concatenation:
         self.tk = tk
         self.curPath = curPath
 
-    def makeKeysList(self):
-        keys = self.keys
-        result = set()
-        for i in keys:
-            if i[0] == '-':
-                for j in i[1:]:
-                    result.add(j)
-            else:
-                return 'Error: unknown key '
-        return result
-
     def writeContent(self):
-        keys = Concatenation.makeKeysList(self)
+        keys = makeKeysList.makeKeysList(self.keys, 'nh')
         text = self.text
         tk = self.tk
         file = '\\'.join(makePath.processingRequest(self.file, self.curPath))
+        if keys.split()[0] == 'Error:':
+            text.insert(tk.END, '\n' + keys, 'err')
+            return
         if not path.isfile(file):
             text.insert(tk.END, '\nError: ' + file + ' is not a file', 'err')
         if path.isfile(file):
